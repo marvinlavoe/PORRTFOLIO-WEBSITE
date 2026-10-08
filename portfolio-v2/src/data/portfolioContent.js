@@ -39,8 +39,7 @@ export const portfolioContent = {
         value: "Actively building portfolio-ready case studies",
       },
     ],
-    portraitNote:
-      "A portrait of Marvin Lavoe, UX/UI and product designer.",
+    portraitNote: "A portrait of Marvin Lavoe, UX/UI and product designer.",
   },
   about: {
     statement:

@@ -1,7 +1,89 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaArrowRight } from 'react-icons/fa';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
 
-const capabilities = ['UX Research','Product Design','UI Design','Design Systems','Prototyping','Usability Testing','Frontend Development','Mobile Development','IoT','AI Products'];
-const About = () => <section className="container about-page"><header className="page-intro"><p className="eyebrow">About Marvin</p><h1>Designing at the intersection of <em>people and technology.</em></h1><p>I'm Marvin Lavoe, a UX/UI and product designer with a technical background. I enjoy turning complex systems and technical ideas into experiences that are understandable, useful, and enjoyable to use.</p></header><div className="about-story"><div className="story-mark"><img src="/marvin-lavoe.jpg" alt="Portrait of Marvin Lavoe"/><span>MARVIN LAVOE · DESIGN × TECHNOLOGY</span></div><div><p className="eyebrow">The way I think</p><h2>Good design makes the next step feel clear.</h2><p>I’m drawn to products where there is a lot going on beneath the surface: enterprise workflows, mobile tools used in the field, connected devices, and emerging AI experiences. I bring curiosity about the people using them and respect for the systems that make them work.</p><p>My technical experience helps me ask better implementation questions and collaborate across disciplines. My design practice keeps the conversation centered on usefulness, clarity, and access.</p><Link to="/work" className="text-link">See how I approach projects <FaArrowRight/></Link></div></div><section className="capability-section"><p className="eyebrow">Areas of practice</p><h2>From discovery to delivery.</h2><div className="capability-grid">{capabilities.map((skill,index)=><div key={skill}><span>0{index+1}</span><b>{skill}</b></div>)}</div></section><section className="learning-section"><p className="eyebrow">My foundation</p><div className="learning-row"><span>2021—2025</span><div><h3>BTech. Computer Technology</h3><p>Kumasi Technical University · Ghana</p></div><p>A technical foundation across software development and electronics, informing a practical, collaborative design approach.</p></div></section><div className="about-bottom"><p>Interested in thoughtful products and meaningful design challenges.</p><Link className="button button-dark" to="/contact">Let’s talk <FaArrowRight/></Link></div></section>;
+const capabilities = [
+  "UX Research",
+  "Product Design",
+  "UI Design",
+  "Design Systems",
+  "Prototyping",
+  "Usability Testing",
+  "Frontend Development",
+  "Mobile Development",
+  "IoT",
+  "AI Products",
+];
+const About = () => (
+  <section className="container about-page">
+    <header className="page-intro">
+      <p className="eyebrow">About Marvin</p>
+      <h1>
+        Designing at the intersection of <em>people and technology.</em>
+      </h1>
+      <p>
+        I'm Marvin Lavoe, a UX/UI and product designer with a technical
+        background. I enjoy turning complex systems and technical ideas into
+        experiences that are understandable, useful, and enjoyable to use.
+      </p>
+    </header>
+    <div className="about-story">
+      <div className="story-mark">
+        <img src="/marvin-lavoe.jpg" alt="Portrait of Marvin Lavoe" />
+        <span>MARVIN LAVOE · DESIGN × TECHNOLOGY</span>
+      </div>
+      <div>
+        <p className="eyebrow">The way I think</p>
+        <h2>Good design makes the next step feel clear.</h2>
+        <p>
+          I’m drawn to products where there is a lot going on beneath the
+          surface: enterprise workflows, mobile tools used in the field,
+          connected devices, and emerging AI experiences. I bring curiosity
+          about the people using them and respect for the systems that make them
+          work.
+        </p>
+        <p>
+          My technical experience helps me ask better implementation questions
+          and collaborate across disciplines. My design practice keeps the
+          conversation centered on usefulness, clarity, and access.
+        </p>
+        <Link to="/work" className="text-link">
+          See how I approach projects <FaArrowRight />
+        </Link>
+      </div>
+    </div>
+    <section className="capability-section">
+      <p className="eyebrow">Areas of practice</p>
+      <h2>From discovery to delivery.</h2>
+      <div className="capability-grid">
+        {capabilities.map((skill, index) => (
+          <div key={skill}>
+            <span>0{index + 1}</span>
+            <b>{skill}</b>
+          </div>
+        ))}
+      </div>
+    </section>
+    <section className="learning-section">
+      <p className="eyebrow">My foundation</p>
+      <div className="learning-row">
+        <span>2021—2025</span>
+        <div>
+          <h3>BTech. Computer Technology</h3>
+          <p>Kumasi Technical University · Ghana</p>
+        </div>
+        <p>
+          A technical foundation across software development and electronics,
+          informing a practical, collaborative design approach.
+        </p>
+      </div>
+    </section>
+    <div className="about-bottom">
+      <p>Interested in thoughtful products and meaningful design challenges.</p>
+      <Link className="button button-dark" to="/contact">
+        Let’s talk <FaArrowRight />
+      </Link>
+    </div>
+  </section>
+);
 export default About;
