@@ -11,6 +11,7 @@ export const portfolioContent = {
     location: "Kumasi, Ghana",
     availability: "Available for design opportunities.",
     navigation: [
+      { label: "Home", to: "/" },
       { label: "Work", to: "/work" },
       { label: "About", to: "/about" },
       { label: "Resume", to: "/resume" },

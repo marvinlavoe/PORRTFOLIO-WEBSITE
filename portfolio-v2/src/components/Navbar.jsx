@@ -4,6 +4,7 @@ import { FaBars, FaTimes, FaExternalLinkAlt } from "react-icons/fa";
 import "./Navbar.css";
 
 const links = [
+  { label: "Home", to: "/", end: true },
   { label: "Work", to: "/work" },
   { label: "About", to: "/about" },
   { label: "Resume", to: "/resume" },
@@ -43,6 +44,7 @@ const Navbar = () => {
               <li key={item.to}>
                 <NavLink
                   to={item.to}
+                  end={item.end}
                   className={({ isActive }) =>
                     isActive ? "nav-link active" : "nav-link"
                   }
