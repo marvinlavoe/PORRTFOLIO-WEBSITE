@@ -1,0 +1,41 @@
+.blog-page {
+    padding: var(--section-space) 0;
+}
+
+.blog-shell {
+    width: min(760px, 100%);
+    margin: 2rem auto 0;
+    padding: 2rem;
+    text-align: center;
+}
+
+.blog-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1.2rem;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background: rgba(77, 163, 255, 0.12);
+    color: var(--accent);
+    font-size: 1.4rem;
+}
+
+.blog-shell h3 {
+    font-family: 'Space Grotesk', 'Manrope', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+}
+
+.blog-shell p {
+    width: min(560px, 100%);
+    margin: 1rem auto 0;
+    color: var(--text-muted);
+}
+
+.blog-topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-top: 1.6rem;
+}

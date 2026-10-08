@@ -1,0 +1,5 @@
+import React from 'react';
+import { FaArrowRight, FaGithub } from 'react-icons/fa';
+
+const Contact = () => <section className="container contact-page"><p className="eyebrow">Contact · Kumasi, Ghana</p><h1>Have a product or design problem <em>to solve?</em></h1><p className="contact-lede">I'm interested in thoughtful products, complex problems, and opportunities where design can make technology easier to use.</p><div className="contact-main"><div><span className="availability-dot"/> Available for design opportunities</div><p className="contact-email">Email address not provided yet</p><p className="contact-disclaimer">LinkedIn and Figma profile links have not been provided. No unverified contact details are published here.</p></div><div className="contact-links"><a href="https://github.com/marvinlavoe" target="_blank" rel="noreferrer"><FaGithub/> GitHub <span>Public profile</span><FaArrowRight/></a><div><span>LinkedIn</span><small>Profile link not provided</small></div><div><span>Figma</span><small>Portfolio link not provided</small></div></div></section>;
+export default Contact;
