@@ -40,7 +40,7 @@ export const portfolioContent = {
       },
     ],
     portraitNote:
-      "A personal portrait will be added soon. For now, this space is intentionally minimal instead of using a stock photo.",
+      "A portrait of Marvin Lavoe, UX/UI and product designer.",
   },
   about: {
     statement:
