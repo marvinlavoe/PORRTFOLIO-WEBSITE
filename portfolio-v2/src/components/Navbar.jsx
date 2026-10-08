@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { FaBars, FaTimes, FaExternalLinkAlt } from 'react-icons/fa';
 import './Navbar.css';
 
-const links = [{ label: 'Work', to: '/work' }, { label: 'About', to: '/about' }, { label: 'Resume', to: '/resume' }, { label: 'Contact', to: '/contact' }];
+const links = [{ label: 'Work', to: '/work' }, { label: 'About', to: '/about' }, { label: 'Resume', to: '/resume' }, { label: 'GitHub', to: '/github' }, { label: 'Contact', to: '/contact' }];
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const closeMenu = () => setIsOpen(false);

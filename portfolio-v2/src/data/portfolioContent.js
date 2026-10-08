@@ -14,6 +14,7 @@ export const portfolioContent = {
       { label: 'Work', to: '/work' },
       { label: 'About', to: '/about' },
       { label: 'Resume', to: '/resume' },
+      { label: 'GitHub', to: '/github' },
       { label: 'Contact', to: '/contact' },
     ],
   },

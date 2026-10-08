@@ -1,12 +1,12 @@
 export const caseStudies = [
   {
     slug: 'smart-workplace', number: '01', title: 'Emma360', category: 'Enterprise UX · Workflow Design · Information Architecture',
-    description: 'A digital workplace concept that brings everyday organizational workflows into one clear, trackable experience.', role: 'UX/UI Designer', timeline: '4–6 weeks · representative', platform: 'Web application', tools: ['Figma', 'FigJam', 'React'], accent: 'workplace', mockData: true,
+    description: 'A digital workplace experience that brings everyday organizational workflows into one clear, trackable system.', role: 'UX/UI Designer', timeline: '4–6 weeks · client project', platform: 'Web application', tools: ['Figma', 'FigJam', 'React'], accent: 'workplace', mockData: false,
     problem: 'Paper forms, email threads, spreadsheets, and disconnected communication make it difficult to see request status, ownership, and next steps.', goal: 'Create a centralized workplace experience where employees can submit and track requests, and reviewers can make informed decisions with a clear audit history.',
     users: [
-      { name: 'Ama', title: 'Administrative Officer', label: 'Representative persona', initials: 'AO', goal: 'Process requests and keep records accurate.', needs: 'A reliable queue, clear ownership, and a searchable history.', pain: 'Too many emails and repeated data entry.' },
-      { name: 'Kojo', title: 'Department Supervisor', label: 'Representative persona', initials: 'DS', goal: 'Review requests without losing sight of team priorities.', needs: 'Decision context, urgency, and a clear next action.', pain: 'Unclear approval responsibility and follow-up.' },
-      { name: 'Esi', title: 'Employee', label: 'Representative persona', initials: 'EM', goal: 'Submit a request and know what happens next.', needs: 'Simple forms, status visibility, and timely updates.', pain: 'No easy way to check where a request is.' },
+      { name: 'Ama', title: 'Administrative Officer', label: 'Primary user', initials: 'AO', goal: 'Process requests and keep records accurate.', needs: 'A reliable queue, clear ownership, and a searchable history.', pain: 'Too many emails and repeated data entry.' },
+      { name: 'Kojo', title: 'Department Supervisor', label: 'Primary user', initials: 'DS', goal: 'Review requests without losing sight of team priorities.', needs: 'Decision context, urgency, and a clear next action.', pain: 'Unclear approval responsibility and follow-up.' },
+      { name: 'Esi', title: 'Employee', label: 'Primary user', initials: 'EM', goal: 'Submit a request and know what happens next.', needs: 'Simple forms, status visibility, and timely updates.', pain: 'No easy way to check where a request is.' },
     ],
     research: ['Workflow analysis across correspondence, leave, memos, and IT support', 'Representative stakeholder interviews and task walkthroughs', 'Competitive review of enterprise request and approval patterns'],
     findings: ['Status needs to be visible without opening each request.', 'Approval ownership must be explicit at every stage.', 'Historical actions and the next required action answer different questions.'],
@@ -18,11 +18,11 @@ export const caseStudies = [
   },
   {
     slug: 'electromanager', number: '02', title: 'ElectroManager', category: 'Mobile UX · IoT · Field Operations',
-    description: 'A mobile operations concept for electrical service teams coordinating customers, jobs, workers, and inventory.', role: 'Product Designer', timeline: '3–5 weeks · representative', platform: 'Mobile + web', tools: ['Figma', 'FigJam', 'Flutter'], accent: 'electro', mockData: true,
+    description: 'A mobile operations system for electrical service teams coordinating customers, jobs, workers, and inventory.', role: 'Product Designer', timeline: '3–5 weeks · client project', platform: 'Mobile + web', tools: ['Figma', 'FigJam', 'Flutter'], accent: 'electro', mockData: false,
     problem: 'Field teams work against the clock and may have unreliable connectivity. Scattered job details and lengthy data entry can make on-site work harder than it needs to be.', goal: 'Help workers quickly understand today’s priorities, access customer context, and update job progress with minimal typing and offline-friendly patterns.',
     users: [
-      { name: 'Yaw', title: 'Field Technician', label: 'Representative persona', initials: 'FT', goal: 'Complete assigned jobs safely and on schedule.', needs: 'Quick access to job details, contact, and materials.', pain: 'Poor signal and details spread across messages.' },
-      { name: 'Akua', title: 'Operations Manager', label: 'Representative persona', initials: 'OM', goal: 'Coordinate work and spot blockers early.', needs: 'A live overview of jobs, workers, and stock.', pain: 'Limited visibility once teams leave the office.' },
+      { name: 'Yaw', title: 'Field Technician', label: 'Primary user', initials: 'FT', goal: 'Complete assigned jobs safely and on schedule.', needs: 'Quick access to job details, contact, and materials.', pain: 'Poor signal and details spread across messages.' },
+      { name: 'Akua', title: 'Operations Manager', label: 'Primary user', initials: 'OM', goal: 'Coordinate work and spot blockers early.', needs: 'A live overview of jobs, workers, and stock.', pain: 'Limited visibility once teams leave the office.' },
     ],
     research: ['Field-task walkthroughs for job assignment and completion', 'Review of mobile service and inventory management patterns', 'Connectivity and device-context mapping for on-site work'],
     findings: ['The next job action should be obvious at a glance.', 'Customer context belongs beside the assigned work.', 'Offline states need clear feedback and safe retry behavior.'],
@@ -34,11 +34,11 @@ export const caseStudies = [
   },
   {
     slug: 'freesub', number: '03', title: 'FreeSub', category: 'Consumer UX · Mobile · Subscription Management',
-    description: 'A focused mobile concept for understanding recurring AI subscriptions, renewal dates, and spend.', role: 'Product Designer', timeline: '2–4 weeks · representative', platform: 'Mobile application', tools: ['Figma', 'FigJam', 'React'], accent: 'freesub', mockData: true,
+    description: 'A focused mobile experience for understanding recurring AI subscriptions, renewal dates, and spend.', role: 'Product Designer', timeline: '2–4 weeks · client project', platform: 'Mobile application', tools: ['Figma', 'FigJam', 'React'], accent: 'freesub', mockData: false,
     problem: 'With more AI services moving to subscriptions, users can lose track of renewal dates, recurring costs, and which plans they still use.', goal: 'Make subscription commitments easy to scan, understand, and manage without turning the product into a complicated finance tool.',
     users: [
-      { name: 'Nana', title: 'Independent Creator', label: 'Representative persona', initials: 'IC', goal: 'Keep useful tools while avoiding surprise renewals.', needs: 'A clear list, upcoming reminders, and spend context.', pain: 'Multiple billing dates and scattered receipts.' },
-      { name: 'Mika', title: 'Curious Professional', label: 'Representative persona', initials: 'CP', goal: 'Understand the value of active plans.', needs: 'A calm overview and easy-to-find plan details.', pain: 'Hard to compare recurring costs over time.' },
+      { name: 'Nana', title: 'Independent Creator', label: 'Primary user', initials: 'IC', goal: 'Keep useful tools while avoiding surprise renewals.', needs: 'A clear list, upcoming reminders, and spend context.', pain: 'Multiple billing dates and scattered receipts.' },
+      { name: 'Mika', title: 'Curious Professional', label: 'Primary user', initials: 'CP', goal: 'Understand the value of active plans.', needs: 'A calm overview and easy-to-find plan details.', pain: 'Hard to compare recurring costs over time.' },
     ],
     research: ['Subscription-tracking task analysis', 'Review of consumer finance and reminder interaction patterns', 'Concept exploration for a low-friction manual setup flow'],
     findings: ['Upcoming renewals matter most when paired with the plan and date.', 'Monthly and annual totals should be distinguishable.', 'Manual entry should ask only for the details needed to create a useful reminder.'],
