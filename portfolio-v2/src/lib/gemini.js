@@ -151,7 +151,10 @@ export function parseReadmeHeuristically(text, repoMeta = {}) {
     const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const rightBoundary = /[\w]$/.test(keyword) ? "\\b" : "(?![\\w+#])";
     const cLanguageGuard = keyword === "C" ? "(?![+#])" : "";
-    const regex = new RegExp(`\\b${escapedKeyword}${rightBoundary}${cLanguageGuard}`, "i");
+    const regex = new RegExp(
+      `\\b${escapedKeyword}${rightBoundary}${cLanguageGuard}`,
+      "i",
+    );
     if (regex.test(text)) {
       detectedStack.add(keyword);
     }
