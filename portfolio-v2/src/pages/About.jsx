@@ -22,7 +22,7 @@ const About = () => (
         Designing at the intersection of <em>people and technology.</em>
       </h1>
       <p>
-        I'm Marvin Lavoe, a UX/UI and product designer with a technical
+        I&apos;m Marvin Lavoe, a UX/UI and product designer with a technical
         background. I enjoy turning complex systems and technical ideas into
         experiences that are understandable, useful, and enjoyable to use.
       </p>

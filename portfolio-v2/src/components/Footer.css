@@ -53,6 +53,25 @@ footer {
     padding-top: 1rem;
     color: #82827b;
     font-size: .7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.footer-admin-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #82827b;
+    text-decoration: none;
+    font-size: 0.72rem;
+    transition: color 0.2s ease;
+}
+
+.footer-admin-link:hover {
+    color: var(--ink);
 }
 
 @media (max-width: 680px) {

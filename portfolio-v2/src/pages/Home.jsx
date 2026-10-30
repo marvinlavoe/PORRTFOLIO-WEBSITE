@@ -2,7 +2,8 @@ import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-import { caseStudies, designProcess } from "../data/caseStudies";
+import { designProcess } from "../data/caseStudies";
+import { usePortfolioData } from "../context/DataContext";
 import { ProductPreview } from "../components/PortfolioVisuals";
 
 const reveal = {
@@ -16,6 +17,7 @@ const reveal = {
 
 const Home = () => {
   const shouldReduceMotion = useReducedMotion();
+  const { caseStudies } = usePortfolioData();
 
   return (
     <>

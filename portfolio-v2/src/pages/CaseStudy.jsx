@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { caseStudies } from "../data/caseStudies";
+import { usePortfolioData } from "../context/DataContext";
 import {
   PersonaCard,
   ProductPreview,
@@ -10,6 +10,7 @@ import {
 
 const CaseStudy = () => {
   const { slug } = useParams();
+  const { caseStudies } = usePortfolioData();
   const project = caseStudies.find((item) => item.slug === slug);
   if (!project) return <Navigate to="/work" replace />;
   const index = caseStudies.indexOf(project);
@@ -86,7 +87,7 @@ const CaseStudy = () => {
           </div>
           <div className="findings">
             <h3>Key themes to design for</h3>
-            {project.findings.map((item, i) => (
+            {project.findings.map((item) => (
               <p key={item}>
                 <span>↗</span>
                 {item}

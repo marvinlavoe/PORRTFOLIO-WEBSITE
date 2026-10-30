@@ -8,7 +8,7 @@ const Contact = () => (
       Have a product or design problem <em>to solve?</em>
     </h1>
     <p className="contact-lede">
-      I'm interested in thoughtful products, complex problems, and opportunities
+      I&apos;m interested in thoughtful products, complex problems, and opportunities
       where design can make technology easier to use.
     </p>
     <div className="contact-main">

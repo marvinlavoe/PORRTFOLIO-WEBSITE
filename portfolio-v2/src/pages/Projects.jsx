@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import portfolioContent from '../data/portfolioContent';
+import { usePortfolioData } from '../context/DataContext';
 import './Projects.css';
 
 const Projects = () => {
     const shouldReduceMotion = useReducedMotion();
-    const { projects } = portfolioContent;
+    const { projects } = usePortfolioData();
     const featuredProjects = projects.filter((project) => project.featured);
     const secondaryProjects = projects.filter((project) => !project.featured);
     const linkLabels = {

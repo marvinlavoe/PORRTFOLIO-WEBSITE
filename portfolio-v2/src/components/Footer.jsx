@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaInstagram, FaLinkedinIn, FaTwitter, FaLock } from 'react-icons/fa';
 import portfolioContent from '../data/portfolioContent';
 import './Footer.css';
 
@@ -55,6 +55,10 @@ const Footer = () => {
 
                 <div className="copyright">
                     <p>&copy; {new Date().getFullYear()} {siteMeta.name}. All rights reserved.</p>
+                    <Link to="/admin" className="footer-admin-link">
+                        <FaLock size={10} />
+                        <span>CMS Admin</span>
+                    </Link>
                 </div>
             </div>
         </footer>

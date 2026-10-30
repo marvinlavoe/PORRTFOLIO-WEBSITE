@@ -1,0 +1,127 @@
+.case-studies-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.cs-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cs-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.cs-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cs-number-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.cs-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cs-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 0.2rem;
+}
+
+.cs-card-category {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cs-card-desc {
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.cs-card-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.meta-pill {
+  font-size: 0.76rem;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  color: #334155;
+}
+
+.cs-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.slug-tag {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.select-input {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fafaf8;
+  color: var(--ink);
+  font-size: 0.88rem;
+  min-height: 44px;
+}
+
+.select-input:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: #ffffff;
+}
+
+.cs-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
