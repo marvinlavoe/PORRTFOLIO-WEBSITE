@@ -148,7 +148,10 @@ export function parseReadmeHeuristically(text, repoMeta = {}) {
   });
 
   COMMON_TECH_KEYWORDS.forEach((keyword) => {
-    const regex = new RegExp(`\\b${keyword}\\b`, "i");
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const rightBoundary = /[\w]$/.test(keyword) ? "\\b" : "(?![\\w+#])";
+    const cLanguageGuard = keyword === "C" ? "(?![+#])" : "";
+    const regex = new RegExp(`\\b${escapedKeyword}${rightBoundary}${cLanguageGuard}`, "i");
     if (regex.test(text)) {
       detectedStack.add(keyword);
     }
