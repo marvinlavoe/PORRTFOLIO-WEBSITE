@@ -7,9 +7,14 @@ import {
   FaSearch, 
   FaTimes, 
   FaCheck,
-  FaExclamationCircle
+  FaExclamationCircle,
+  FaMagic,
+  FaGithub,
+  FaSpinner
 } from 'react-icons/fa';
 import { usePortfolioData } from '../../context/DataContext';
+import { parseGitHubRepo, fetchGitHubReadme, fetchGitHubRepoDetails, fetchGitHubUserRepos } from '../../utils/github';
+import { extractProjectWithAI, isGeminiConfigured } from '../../lib/gemini';
 import './ProjectsManager.css';
 
 const defaultProjectForm = {
@@ -54,6 +59,14 @@ const ProjectsManager = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // GitHub AI Auto-Fill states
+  const [githubInput, setGithubInput] = useState('');
+  const [isAnalyzingAi, setIsAnalyzingAi] = useState(false);
+  const [aiStatus, setAiStatus] = useState(null);
+  const [autoFillOpen, setAutoFillOpen] = useState(false);
+  const [userRepos, setUserRepos] = useState([]);
+  const [isLoadingRepos, setIsLoadingRepos] = useState(false);
+
   const filteredProjects = projects.filter((p) => {
     const term = searchTerm.toLowerCase();
     const matchTitle = p.title.toLowerCase().includes(term);
@@ -66,6 +79,10 @@ const ProjectsManager = () => {
     setFormData(defaultProjectForm);
     setTagInput('');
     setErrorMsg('');
+    setGithubInput('');
+    setAiStatus(null);
+    setAutoFillOpen(false);
+    setUserRepos([]);
     setModalOpen(true);
   };
 
@@ -86,6 +103,10 @@ const ProjectsManager = () => {
     });
     setTagInput('');
     setErrorMsg('');
+    setGithubInput(project.links?.repo || '');
+    setAiStatus(null);
+    setAutoFillOpen(false);
+    setUserRepos([]);
     setModalOpen(true);
   };
 
@@ -93,6 +114,29 @@ const ProjectsManager = () => {
     setModalOpen(false);
     setEditingId(null);
     setErrorMsg('');
+    setGithubInput('');
+    setAiStatus(null);
+    setAutoFillOpen(false);
+    setUserRepos([]);
+  };
+
+  const handleToggleAutoFill = async () => {
+    const opening = !autoFillOpen;
+    setAutoFillOpen(opening);
+    if (!opening || userRepos.length || isLoadingRepos) return;
+
+    const username = import.meta.env.VITE_GITHUB_USERNAME;
+    if (!username) return;
+
+    try {
+      setIsLoadingRepos(true);
+      const repositories = await fetchGitHubUserRepos(username);
+      setUserRepos(repositories);
+    } catch (err) {
+      setAiStatus({ type: 'error', message: err.message || 'Could not load public repositories.' });
+    } finally {
+      setIsLoadingRepos(false);
+    }
   };
 
   const handleAddTag = (e) => {
@@ -111,6 +155,84 @@ const ProjectsManager = () => {
       ...prev,
       stack: prev.stack.filter((t) => t !== tagToRemove),
     }));
+  };
+
+  const handleAnalyzeGitHub = async () => {
+    if (!githubInput.trim()) return;
+
+    const parsed = parseGitHubRepo(githubInput);
+    if (!parsed) {
+      setAiStatus({
+        type: 'error',
+        message: 'Invalid GitHub URL. Use format: https://github.com/owner/repo or owner/repo',
+      });
+      return;
+    }
+
+    try {
+      setIsAnalyzingAi(true);
+      setAiStatus({
+        type: 'info',
+        message: `Fetching README from ${parsed.owner}/${parsed.repo}...`,
+      });
+
+      const repoDetails = await fetchGitHubRepoDetails(parsed.owner, parsed.repo);
+      const readmeResult = await fetchGitHubReadme(
+        parsed.owner,
+        parsed.repo,
+        repoDetails.default_branch
+      );
+
+      if (readmeResult.error || !readmeResult.content) {
+        setAiStatus({
+          type: 'error',
+          message: readmeResult.error || 'README not found in this repository.',
+        });
+        return;
+      }
+
+      setAiStatus({
+        type: 'info',
+        message: isGeminiConfigured
+          ? 'Analyzing project details with Google Gemini AI...'
+          : 'Extracting project details using smart markdown parser...',
+      });
+
+      const aiResult = await extractProjectWithAI(readmeResult.content, {
+        owner: parsed.owner,
+        repo: parsed.repo,
+        ...repoDetails,
+      });
+
+      const extracted = aiResult.data;
+
+      setFormData((prev) => ({
+        ...prev,
+        title: extracted.title || prev.title,
+        summary: extracted.summary || prev.summary,
+        problem: extracted.problem || prev.problem,
+        role: extracted.role || prev.role,
+        outcome: extracted.outcome || prev.outcome,
+        stack: Array.from(new Set([...prev.stack, ...(extracted.stack || [])])),
+        accent: extracted.accent || prev.accent,
+        repo_url: `https://github.com/${parsed.owner}/${parsed.repo}`,
+        demo_url: extracted.demo_url || prev.demo_url,
+      }));
+
+      setAiStatus({
+        type: 'success',
+        message: aiResult.source === 'gemini'
+          ? '✨ Project fields successfully auto-filled using Google Gemini AI!'
+          : '✨ Project fields populated using smart markdown parser! (Add VITE_GEMINI_API_KEY in .env for advanced AI extraction)',
+      });
+    } catch (err) {
+      setAiStatus({
+        type: 'error',
+        message: err.message || 'Error analyzing repository.',
+      });
+    } finally {
+      setIsAnalyzingAi(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -296,6 +418,96 @@ const ProjectsManager = () => {
                 <span>{errorMsg}</span>
               </div>
             )}
+
+            {/* AI GitHub Auto-Fill Panel */}
+            <section className="ai-autofill-panel" aria-label="GitHub project auto-fill">
+              <button
+                type="button"
+                className="ai-autofill-toggle"
+                aria-expanded={autoFillOpen}
+                onClick={handleToggleAutoFill}
+              >
+                <span className="ai-header-left">
+                  <FaMagic className="ai-magic-icon" size={14} />
+                  <strong>Auto-fill from GitHub</strong>
+                  <span className="ai-engine-badge">
+                    {isGeminiConfigured ? 'Gemini AI' : 'Smart Parser'}
+                  </span>
+                </span>
+                <span className="ai-header-hint">{autoFillOpen ? 'Hide' : 'Import README details'}</span>
+              </button>
+
+              {autoFillOpen && <div className="ai-autofill-body">
+                <div className="ai-input-row">
+                  <div className="ai-url-wrap">
+                    <FaGithub className="ai-github-icon" size={16} />
+                    <input
+                      type="text"
+                      value={githubInput}
+                      onChange={(e) => setGithubInput(e.target.value)}
+                      aria-label="GitHub repository URL"
+                      placeholder="https://github.com/marvinlavoe/repo-name or owner/repo"
+                      disabled={isAnalyzingAi}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAnalyzeGitHub();
+                        }
+                      }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAnalyzeGitHub}
+                    disabled={isAnalyzingAi || !githubInput.trim()}
+                    className="admin-btn ai-generate-btn"
+                  >
+                    {isAnalyzingAi ? (
+                      <>
+                        <FaSpinner className="spin" size={13} />
+                        <span>Analyzing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaMagic size={13} />
+                        <span>Analyze with AI</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {import.meta.env.VITE_GITHUB_USERNAME && (
+                  <div className="ai-repo-presets" aria-label="Recent public repositories">
+                    <span className="ai-repo-label">{isLoadingRepos ? 'Loading your repositories…' : 'Quick pick'}</span>
+                    {userRepos.map((repo) => (
+                      <button
+                        key={repo.full_name}
+                        type="button"
+                        className="ai-repo-preset"
+                        title={repo.description || repo.full_name}
+                        onClick={() => setGithubInput(repo.html_url)}
+                        disabled={isAnalyzingAi}
+                      >
+                        {repo.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {aiStatus && (
+                  <div className={`ai-status-note ${aiStatus.type}`} role={aiStatus.type === 'error' ? 'alert' : 'status'} aria-live="polite">
+                    {aiStatus.type === 'success' ? (
+                      <FaCheck size={12} color="#16a34a" />
+                    ) : aiStatus.type === 'info' ? (
+                      <FaSpinner className="spin" size={12} />
+                    ) : (
+                      <FaExclamationCircle size={12} color="#dc2626" />
+                    )}
+                    <span>{aiStatus.message}</span>
+                  </div>
+                )}
+              </div>}
+            </section>
 
             <form onSubmit={handleSubmit} className="project-modal-form">
               <div className="form-row">
