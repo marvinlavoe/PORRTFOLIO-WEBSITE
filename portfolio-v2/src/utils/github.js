@@ -9,30 +9,37 @@
  * - github.com/owner/repo
  * - owner/repo
  * - https://github.com/owner/repo.git
- * @param {string} input 
+ * @param {string} input
  * @returns {{ owner: string, repo: string } | null}
  */
 export function parseGitHubRepo(input) {
-  if (!input || typeof input !== 'string') return null;
+  if (!input || typeof input !== "string") return null;
   const value = input.trim();
   let parts;
 
   if (/^(https?:\/\/)?(www\.)?github\.com\//i.test(value)) {
     try {
-      const url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`);
-      if (url.hostname.toLowerCase() !== 'github.com' || url.username || url.password) return null;
-      parts = url.pathname.split('/').filter(Boolean).slice(0, 2);
+      const url = new URL(
+        /^https?:\/\//i.test(value) ? value : `https://${value}`,
+      );
+      if (
+        url.hostname.toLowerCase() !== "github.com" ||
+        url.username ||
+        url.password
+      )
+        return null;
+      parts = url.pathname.split("/").filter(Boolean).slice(0, 2);
     } catch {
       return null;
     }
   } else {
-    parts = value.split('/');
+    parts = value.split("/");
   }
 
   if (parts.length !== 2 || !parts[0] || !parts[1]) return null;
 
   const owner = parts[0];
-  const repo = parts[1].replace(/\.git$/i, '');
+  const repo = parts[1].replace(/\.git$/i, "");
   if (!/^[\w.-]+$/.test(owner) || !/^[\w.-]+$/.test(repo)) return null;
   return { owner, repo };
 }
@@ -40,12 +47,14 @@ export function parseGitHubRepo(input) {
 /**
  * Fetches the raw README.md content from a GitHub repository.
  * Tries HEAD, main, and master branches.
- * @param {string} owner 
- * @param {string} repo 
+ * @param {string} owner
+ * @param {string} repo
  * @returns {Promise<{ content: string | null, error: string | null }>}
  */
 export async function fetchGitHubReadme(owner, repo, defaultBranch) {
-  const branches = [...new Set([defaultBranch, 'main', 'master'].filter(Boolean))];
+  const branches = [
+    ...new Set([defaultBranch, "main", "master"].filter(Boolean)),
+  ];
 
   for (const branch of branches) {
     try {
@@ -82,32 +91,34 @@ export async function fetchGitHubReadme(owner, repo, defaultBranch) {
 
 /**
  * Fetches public GitHub repository metadata (description, topics, homepage).
- * @param {string} owner 
- * @param {string} repo 
+ * @param {string} owner
+ * @param {string} repo
  * @returns {Promise<{ description?: string, homepage?: string, topics?: string[], html_url?: string }>}
  */
 export async function fetchGitHubRepoDetails(owner, repo) {
   try {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}`,
+    );
     if (response.ok) {
       const data = await response.json();
       return {
-        description: data.description || '',
-        homepage: data.homepage || '',
+        description: data.description || "",
+        homepage: data.homepage || "",
         topics: data.topics || [],
-        default_branch: data.default_branch || '',
+        default_branch: data.default_branch || "",
         html_url: data.html_url || `https://github.com/${owner}/${repo}`,
       };
     }
   } catch (err) {
-    console.warn('Could not fetch GitHub repo details from API:', err);
+    console.warn("Could not fetch GitHub repo details from API:", err);
   }
 
   return {
-    description: '',
-    homepage: '',
+    description: "",
+    homepage: "",
     topics: [],
-    default_branch: '',
+    default_branch: "",
     html_url: `https://github.com/${owner}/${repo}`,
   };
 }
@@ -119,12 +130,14 @@ export async function fetchGitHubRepoDetails(owner, repo) {
  */
 export async function fetchGitHubUserRepos(username) {
   const response = await fetch(
-    `https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=updated&direction=desc&per_page=8`
+    `https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=updated&direction=desc&per_page=8`,
   );
   if (!response.ok) {
-    throw new Error(response.status === 404
-      ? `GitHub user "${username}" was not found.`
-      : `Could not load public repositories (GitHub returned ${response.status}).`);
+    throw new Error(
+      response.status === 404
+        ? `GitHub user "${username}" was not found.`
+        : `Could not load public repositories (GitHub returned ${response.status}).`,
+    );
   }
 
   const repositories = await response.json();
@@ -132,6 +145,6 @@ export async function fetchGitHubUserRepos(username) {
     name,
     full_name,
     html_url,
-    description: description || '',
+    description: description || "",
   }));
 }

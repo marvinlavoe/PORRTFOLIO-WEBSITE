@@ -1,66 +1,71 @@
-import React, { useState } from 'react';
-import { 
-  FaPlus, 
-  FaEdit, 
-  FaTrash, 
-  FaStar, 
-  FaSearch, 
-  FaTimes, 
+import React, { useState } from "react";
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaStar,
+  FaSearch,
+  FaTimes,
   FaCheck,
   FaExclamationCircle,
   FaMagic,
   FaGithub,
-  FaSpinner
-} from 'react-icons/fa';
-import { usePortfolioData } from '../../context/DataContext';
-import { parseGitHubRepo, fetchGitHubReadme, fetchGitHubRepoDetails, fetchGitHubUserRepos } from '../../utils/github';
-import { extractProjectWithAI, isGeminiConfigured } from '../../lib/gemini';
-import './ProjectsManager.css';
+  FaSpinner,
+} from "react-icons/fa";
+import { usePortfolioData } from "../../context/DataContext";
+import {
+  parseGitHubRepo,
+  fetchGitHubReadme,
+  fetchGitHubRepoDetails,
+  fetchGitHubUserRepos,
+} from "../../utils/github";
+import { extractProjectWithAI, isGeminiConfigured } from "../../lib/gemini";
+import "./ProjectsManager.css";
 
 const defaultProjectForm = {
-  title: '',
-  summary: '',
-  problem: '',
-  role: '',
-  outcome: '',
+  title: "",
+  summary: "",
+  problem: "",
+  role: "",
+  outcome: "",
   stack: [],
   featured: false,
-  accent: '#0f766e',
-  repo_url: '',
-  demo_url: '',
-  case_study_url: '',
+  accent: "#0f766e",
+  repo_url: "",
+  demo_url: "",
+  case_study_url: "",
 };
 
 const ACCENT_PRESETS = [
-  '#0f766e', // Teal
-  '#1d4ed8', // Blue
-  '#0369a1', // Sky
-  '#4f46e5', // Indigo
-  '#b91c1c', // Crimson
-  '#c2410c', // Orange
-  '#7c3aed', // Purple
-  '#059669', // Emerald
+  "#0f766e", // Teal
+  "#1d4ed8", // Blue
+  "#0369a1", // Sky
+  "#4f46e5", // Indigo
+  "#b91c1c", // Crimson
+  "#c2410c", // Orange
+  "#7c3aed", // Purple
+  "#059669", // Emerald
 ];
 
 const ProjectsManager = () => {
-  const { 
-    projects, 
-    createProject, 
-    updateProject, 
-    deleteProject, 
-    toggleProjectFeatured 
+  const {
+    projects,
+    createProject,
+    updateProject,
+    deleteProject,
+    toggleProjectFeatured,
   } = usePortfolioData();
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(defaultProjectForm);
-  const [tagInput, setTagInput] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [tagInput, setTagInput] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // GitHub AI Auto-Fill states
-  const [githubInput, setGithubInput] = useState('');
+  const [githubInput, setGithubInput] = useState("");
   const [isAnalyzingAi, setIsAnalyzingAi] = useState(false);
   const [aiStatus, setAiStatus] = useState(null);
   const [autoFillOpen, setAutoFillOpen] = useState(false);
@@ -77,9 +82,9 @@ const ProjectsManager = () => {
   const handleOpenNew = () => {
     setEditingId(null);
     setFormData(defaultProjectForm);
-    setTagInput('');
-    setErrorMsg('');
-    setGithubInput('');
+    setTagInput("");
+    setErrorMsg("");
+    setGithubInput("");
     setAiStatus(null);
     setAutoFillOpen(false);
     setUserRepos([]);
@@ -89,21 +94,21 @@ const ProjectsManager = () => {
   const handleOpenEdit = (project) => {
     setEditingId(project.id);
     setFormData({
-      title: project.title || '',
-      summary: project.summary || '',
-      problem: project.problem || '',
-      role: project.role || '',
-      outcome: project.outcome || '',
+      title: project.title || "",
+      summary: project.summary || "",
+      problem: project.problem || "",
+      role: project.role || "",
+      outcome: project.outcome || "",
       stack: project.stack || [],
       featured: Boolean(project.featured),
-      accent: project.accent || '#0f766e',
-      repo_url: project.links?.repo || '',
-      demo_url: project.links?.demo || '',
-      case_study_url: project.links?.caseStudy || '',
+      accent: project.accent || "#0f766e",
+      repo_url: project.links?.repo || "",
+      demo_url: project.links?.demo || "",
+      case_study_url: project.links?.caseStudy || "",
     });
-    setTagInput('');
-    setErrorMsg('');
-    setGithubInput(project.links?.repo || '');
+    setTagInput("");
+    setErrorMsg("");
+    setGithubInput(project.links?.repo || "");
     setAiStatus(null);
     setAutoFillOpen(false);
     setUserRepos([]);
@@ -113,8 +118,8 @@ const ProjectsManager = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
     setEditingId(null);
-    setErrorMsg('');
-    setGithubInput('');
+    setErrorMsg("");
+    setGithubInput("");
     setAiStatus(null);
     setAutoFillOpen(false);
     setUserRepos([]);
@@ -133,19 +138,22 @@ const ProjectsManager = () => {
       const repositories = await fetchGitHubUserRepos(username);
       setUserRepos(repositories);
     } catch (err) {
-      setAiStatus({ type: 'error', message: err.message || 'Could not load public repositories.' });
+      setAiStatus({
+        type: "error",
+        message: err.message || "Could not load public repositories.",
+      });
     } finally {
       setIsLoadingRepos(false);
     }
   };
 
   const handleAddTag = (e) => {
-    if (e.key === 'Enter' || e.key === ',') {
+    if (e.key === "Enter" || e.key === ",") {
       e.preventDefault();
-      const val = tagInput.trim().replace(/^,+|,+$/g, '');
+      const val = tagInput.trim().replace(/^,+|,+$/g, "");
       if (val && !formData.stack.includes(val)) {
         setFormData((prev) => ({ ...prev, stack: [...prev.stack, val] }));
-        setTagInput('');
+        setTagInput("");
       }
     }
   };
@@ -163,8 +171,9 @@ const ProjectsManager = () => {
     const parsed = parseGitHubRepo(githubInput);
     if (!parsed) {
       setAiStatus({
-        type: 'error',
-        message: 'Invalid GitHub URL. Use format: https://github.com/owner/repo or owner/repo',
+        type: "error",
+        message:
+          "Invalid GitHub URL. Use format: https://github.com/owner/repo or owner/repo",
       });
       return;
     }
@@ -172,30 +181,33 @@ const ProjectsManager = () => {
     try {
       setIsAnalyzingAi(true);
       setAiStatus({
-        type: 'info',
+        type: "info",
         message: `Fetching README from ${parsed.owner}/${parsed.repo}...`,
       });
 
-      const repoDetails = await fetchGitHubRepoDetails(parsed.owner, parsed.repo);
+      const repoDetails = await fetchGitHubRepoDetails(
+        parsed.owner,
+        parsed.repo,
+      );
       const readmeResult = await fetchGitHubReadme(
         parsed.owner,
         parsed.repo,
-        repoDetails.default_branch
+        repoDetails.default_branch,
       );
 
       if (readmeResult.error || !readmeResult.content) {
         setAiStatus({
-          type: 'error',
-          message: readmeResult.error || 'README not found in this repository.',
+          type: "error",
+          message: readmeResult.error || "README not found in this repository.",
         });
         return;
       }
 
       setAiStatus({
-        type: 'info',
+        type: "info",
         message: isGeminiConfigured
-          ? 'Analyzing project details with Google Gemini AI...'
-          : 'Extracting project details using smart markdown parser...',
+          ? "Analyzing project details with Google Gemini AI..."
+          : "Extracting project details using smart markdown parser...",
       });
 
       const aiResult = await extractProjectWithAI(readmeResult.content, {
@@ -220,15 +232,16 @@ const ProjectsManager = () => {
       }));
 
       setAiStatus({
-        type: 'success',
-        message: aiResult.source === 'gemini'
-          ? '✨ Project fields successfully auto-filled using Google Gemini AI!'
-          : '✨ Project fields populated using smart markdown parser! (Add VITE_GEMINI_API_KEY in .env for advanced AI extraction)',
+        type: "success",
+        message:
+          aiResult.source === "gemini"
+            ? "✨ Project fields successfully auto-filled using Google Gemini AI!"
+            : "✨ Project fields populated using smart markdown parser! (Add VITE_GEMINI_API_KEY in .env for advanced AI extraction)",
       });
     } catch (err) {
       setAiStatus({
-        type: 'error',
-        message: err.message || 'Error analyzing repository.',
+        type: "error",
+        message: err.message || "Error analyzing repository.",
       });
     } finally {
       setIsAnalyzingAi(false);
@@ -237,10 +250,10 @@ const ProjectsManager = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg('');
+    setErrorMsg("");
 
     if (!formData.title.trim() || !formData.summary.trim()) {
-      setErrorMsg('Title and summary are required.');
+      setErrorMsg("Title and summary are required.");
       return;
     }
 
@@ -271,7 +284,10 @@ const ProjectsManager = () => {
 
       handleCloseModal();
     } catch (err) {
-      setErrorMsg(err.message || 'Failed to save project. Ensure Supabase credentials are configured.');
+      setErrorMsg(
+        err.message ||
+          "Failed to save project. Ensure Supabase credentials are configured.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -282,7 +298,7 @@ const ProjectsManager = () => {
       try {
         await deleteProject(id);
       } catch (err) {
-        alert(err.message || 'Error deleting project');
+        alert(err.message || "Error deleting project");
       }
     }
   };
@@ -291,7 +307,7 @@ const ProjectsManager = () => {
     try {
       await toggleProjectFeatured(p.id, p.featured);
     } catch (err) {
-      alert(err.message || 'Failed to toggle featured status');
+      alert(err.message || "Failed to toggle featured status");
     }
   };
 
@@ -322,7 +338,9 @@ const ProjectsManager = () => {
           />
         </div>
         <div className="toolbar-meta">
-          <span>{filteredProjects.length} of {projects.length} projects</span>
+          <span>
+            {filteredProjects.length} of {projects.length} projects
+          </span>
         </div>
       </div>
 
@@ -330,11 +348,11 @@ const ProjectsManager = () => {
         <table className="projects-table">
           <thead>
             <tr>
-              <th style={{ width: '40px' }}>Accent</th>
+              <th style={{ width: "40px" }}>Accent</th>
               <th>Project Title & Summary</th>
               <th>Technologies</th>
-              <th style={{ width: '100px', textAlign: 'center' }}>Featured</th>
-              <th style={{ width: '140px', textAlign: 'right' }}>Actions</th>
+              <th style={{ width: "100px", textAlign: "center" }}>Featured</th>
+              <th style={{ width: "140px", textAlign: "right" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -348,9 +366,9 @@ const ProjectsManager = () => {
               filteredProjects.map((p) => (
                 <tr key={p.id}>
                   <td>
-                    <span 
-                      className="table-accent-dot" 
-                      style={{ backgroundColor: p.accent }} 
+                    <span
+                      className="table-accent-dot"
+                      style={{ backgroundColor: p.accent }}
                       title={p.accent}
                     />
                   </td>
@@ -361,21 +379,25 @@ const ProjectsManager = () => {
                   <td>
                     <div className="tag-chips">
                       {p.stack?.map((tag) => (
-                        <span key={tag} className="tag-chip">{tag}</span>
+                        <span key={tag} className="tag-chip">
+                          {tag}
+                        </span>
                       ))}
                     </div>
                   </td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td style={{ textAlign: "center" }}>
                     <button
                       onClick={() => handleToggleFeatured(p)}
-                      className={`star-btn ${p.featured ? 'active' : ''}`}
-                      title={p.featured ? 'Featured on homepage' : 'Mark as featured'}
+                      className={`star-btn ${p.featured ? "active" : ""}`}
+                      title={
+                        p.featured ? "Featured on homepage" : "Mark as featured"
+                      }
                       aria-label="Toggle featured"
                     >
                       <FaStar size={16} />
                     </button>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td style={{ textAlign: "right" }}>
                     <div className="row-actions">
                       <button
                         onClick={() => handleOpenEdit(p)}
@@ -404,10 +426,17 @@ const ProjectsManager = () => {
 
       {modalOpen && (
         <div className="modal-backdrop" onClick={handleCloseModal}>
-          <div className="modal-content surface-card" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="modal-content surface-card"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="modal-header">
-              <h2>{editingId ? 'Edit Project' : 'New Project'}</h2>
-              <button onClick={handleCloseModal} className="close-btn" aria-label="Close">
+              <h2>{editingId ? "Edit Project" : "New Project"}</h2>
+              <button
+                onClick={handleCloseModal}
+                className="close-btn"
+                aria-label="Close"
+              >
                 <FaTimes size={16} />
               </button>
             </div>
@@ -420,7 +449,10 @@ const ProjectsManager = () => {
             )}
 
             {/* AI GitHub Auto-Fill Panel */}
-            <section className="ai-autofill-panel" aria-label="GitHub project auto-fill">
+            <section
+              className="ai-autofill-panel"
+              aria-label="GitHub project auto-fill"
+            >
               <button
                 type="button"
                 className="ai-autofill-toggle"
@@ -431,82 +463,97 @@ const ProjectsManager = () => {
                   <FaMagic className="ai-magic-icon" size={14} />
                   <strong>Auto-fill from GitHub</strong>
                   <span className="ai-engine-badge">
-                    {isGeminiConfigured ? 'Gemini AI' : 'Smart Parser'}
+                    {isGeminiConfigured ? "Gemini AI" : "Smart Parser"}
                   </span>
                 </span>
-                <span className="ai-header-hint">{autoFillOpen ? 'Hide' : 'Import README details'}</span>
+                <span className="ai-header-hint">
+                  {autoFillOpen ? "Hide" : "Import README details"}
+                </span>
               </button>
 
-              {autoFillOpen && <div className="ai-autofill-body">
-                <div className="ai-input-row">
-                  <div className="ai-url-wrap">
-                    <FaGithub className="ai-github-icon" size={16} />
-                    <input
-                      type="text"
-                      value={githubInput}
-                      onChange={(e) => setGithubInput(e.target.value)}
-                      aria-label="GitHub repository URL"
-                      placeholder="https://github.com/marvinlavoe/repo-name or owner/repo"
-                      disabled={isAnalyzingAi}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          handleAnalyzeGitHub();
-                        }
-                      }}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleAnalyzeGitHub}
-                    disabled={isAnalyzingAi || !githubInput.trim()}
-                    className="admin-btn ai-generate-btn"
-                  >
-                    {isAnalyzingAi ? (
-                      <>
-                        <FaSpinner className="spin" size={13} />
-                        <span>Analyzing...</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaMagic size={13} />
-                        <span>Analyze with AI</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {import.meta.env.VITE_GITHUB_USERNAME && (
-                  <div className="ai-repo-presets" aria-label="Recent public repositories">
-                    <span className="ai-repo-label">{isLoadingRepos ? 'Loading your repositories…' : 'Quick pick'}</span>
-                    {userRepos.map((repo) => (
-                      <button
-                        key={repo.full_name}
-                        type="button"
-                        className="ai-repo-preset"
-                        title={repo.description || repo.full_name}
-                        onClick={() => setGithubInput(repo.html_url)}
+              {autoFillOpen && (
+                <div className="ai-autofill-body">
+                  <div className="ai-input-row">
+                    <div className="ai-url-wrap">
+                      <FaGithub className="ai-github-icon" size={16} />
+                      <input
+                        type="text"
+                        value={githubInput}
+                        onChange={(e) => setGithubInput(e.target.value)}
+                        aria-label="GitHub repository URL"
+                        placeholder="https://github.com/marvinlavoe/repo-name or owner/repo"
                         disabled={isAnalyzingAi}
-                      >
-                        {repo.name}
-                      </button>
-                    ))}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleAnalyzeGitHub();
+                          }
+                        }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAnalyzeGitHub}
+                      disabled={isAnalyzingAi || !githubInput.trim()}
+                      className="admin-btn ai-generate-btn"
+                    >
+                      {isAnalyzingAi ? (
+                        <>
+                          <FaSpinner className="spin" size={13} />
+                          <span>Analyzing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaMagic size={13} />
+                          <span>Analyze with AI</span>
+                        </>
+                      )}
+                    </button>
                   </div>
-                )}
 
-                {aiStatus && (
-                  <div className={`ai-status-note ${aiStatus.type}`} role={aiStatus.type === 'error' ? 'alert' : 'status'} aria-live="polite">
-                    {aiStatus.type === 'success' ? (
-                      <FaCheck size={12} color="#16a34a" />
-                    ) : aiStatus.type === 'info' ? (
-                      <FaSpinner className="spin" size={12} />
-                    ) : (
-                      <FaExclamationCircle size={12} color="#dc2626" />
-                    )}
-                    <span>{aiStatus.message}</span>
-                  </div>
-                )}
-              </div>}
+                  {import.meta.env.VITE_GITHUB_USERNAME && (
+                    <div
+                      className="ai-repo-presets"
+                      aria-label="Recent public repositories"
+                    >
+                      <span className="ai-repo-label">
+                        {isLoadingRepos
+                          ? "Loading your repositories…"
+                          : "Quick pick"}
+                      </span>
+                      {userRepos.map((repo) => (
+                        <button
+                          key={repo.full_name}
+                          type="button"
+                          className="ai-repo-preset"
+                          title={repo.description || repo.full_name}
+                          onClick={() => setGithubInput(repo.html_url)}
+                          disabled={isAnalyzingAi}
+                        >
+                          {repo.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {aiStatus && (
+                    <div
+                      className={`ai-status-note ${aiStatus.type}`}
+                      role={aiStatus.type === "error" ? "alert" : "status"}
+                      aria-live="polite"
+                    >
+                      {aiStatus.type === "success" ? (
+                        <FaCheck size={12} color="#16a34a" />
+                      ) : aiStatus.type === "info" ? (
+                        <FaSpinner className="spin" size={12} />
+                      ) : (
+                        <FaExclamationCircle size={12} color="#dc2626" />
+                      )}
+                      <span>{aiStatus.message}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </section>
 
             <form onSubmit={handleSubmit} className="project-modal-form">
@@ -518,7 +565,9 @@ const ProjectsManager = () => {
                     type="text"
                     required
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     placeholder="e.g. Gesture-Controlled Mecanum Wheel Robot"
                   />
                 </div>
@@ -529,7 +578,9 @@ const ProjectsManager = () => {
                     <input
                       type="color"
                       value={formData.accent}
-                      onChange={(e) => setFormData({ ...formData, accent: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, accent: e.target.value })
+                      }
                       className="color-picker-input"
                     />
                     <div className="presets-row">
@@ -537,9 +588,11 @@ const ProjectsManager = () => {
                         <button
                           key={color}
                           type="button"
-                          className={`preset-circle ${formData.accent === color ? 'selected' : ''}`}
+                          className={`preset-circle ${formData.accent === color ? "selected" : ""}`}
                           style={{ backgroundColor: color }}
-                          onClick={() => setFormData({ ...formData, accent: color })}
+                          onClick={() =>
+                            setFormData({ ...formData, accent: color })
+                          }
                         />
                       ))}
                     </div>
@@ -554,7 +607,9 @@ const ProjectsManager = () => {
                   required
                   rows="2"
                   value={formData.summary}
-                  onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, summary: e.target.value })
+                  }
                   placeholder="One sentence overview describing what this project is and does."
                 />
               </div>
@@ -566,7 +621,9 @@ const ProjectsManager = () => {
                     id="proj-problem"
                     rows="2"
                     value={formData.problem}
-                    onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, problem: e.target.value })
+                    }
                     placeholder="What problem or constraint prompted this build?"
                   />
                 </div>
@@ -577,7 +634,9 @@ const ProjectsManager = () => {
                     id="proj-outcome"
                     rows="2"
                     value={formData.outcome}
-                    onChange={(e) => setFormData({ ...formData, outcome: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, outcome: e.target.value })
+                    }
                     placeholder="What did you build and deliver?"
                   />
                 </div>
@@ -589,7 +648,9 @@ const ProjectsManager = () => {
                   id="proj-role"
                   type="text"
                   value={formData.role}
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, role: e.target.value })
+                  }
                   placeholder="e.g. Designed the control flow, wireless communication, and hardware assembly."
                 />
               </div>
@@ -628,7 +689,9 @@ const ProjectsManager = () => {
                     id="proj-repo"
                     type="url"
                     value={formData.repo_url}
-                    onChange={(e) => setFormData({ ...formData, repo_url: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, repo_url: e.target.value })
+                    }
                     placeholder="https://github.com/..."
                   />
                 </div>
@@ -639,7 +702,9 @@ const ProjectsManager = () => {
                     id="proj-demo"
                     type="url"
                     value={formData.demo_url}
-                    onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, demo_url: e.target.value })
+                    }
                     placeholder="https://..."
                   />
                 </div>
@@ -650,7 +715,12 @@ const ProjectsManager = () => {
                     id="proj-casestudy"
                     type="text"
                     value={formData.case_study_url}
-                    onChange={(e) => setFormData({ ...formData, case_study_url: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        case_study_url: e.target.value,
+                      })
+                    }
                     placeholder="/work/smart-workplace"
                   />
                 </div>
@@ -661,23 +731,35 @@ const ProjectsManager = () => {
                   <input
                     type="checkbox"
                     checked={formData.featured}
-                    onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, featured: e.target.checked })
+                    }
                   />
                   <span>Feature on homepage & top of projects page</span>
                 </label>
               </div>
 
               <div className="modal-actions">
-                <button type="button" onClick={handleCloseModal} className="admin-btn cancel-btn">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="admin-btn cancel-btn"
+                >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
-                  disabled={isSubmitting} 
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
                   className="admin-btn primary-btn"
                 >
                   <FaCheck size={13} />
-                  <span>{isSubmitting ? 'Saving...' : editingId ? 'Update Project' : 'Create Project'}</span>
+                  <span>
+                    {isSubmitting
+                      ? "Saving..."
+                      : editingId
+                        ? "Update Project"
+                        : "Create Project"}
+                  </span>
                 </button>
               </div>
             </form>

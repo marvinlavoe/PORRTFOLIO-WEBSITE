@@ -8,20 +8,20 @@ A responsive personal portfolio for Marvin Lavoe, a UX/UI and product designer i
 
 Use these fields when creating or editing a project at `/admin/projects`. Required fields are marked with `*`. Generated or imported content should be reviewed and edited before saving; do not claim metrics, shipped outcomes, or personal responsibilities unless they are accurate.
 
-| CMS field | Required | What to enter |
-| --- | --- | --- |
-| Project Title | Yes | A clear, human-readable name. |
-| Short Summary | Yes | One or two concise sentences describing what the project is and does. |
-| Problem Statement | No | The real problem, user need, or technical constraint that motivated the work. |
-| My Role & Responsibilities | No | Your actual contributions and ownership. |
-| Outcome / Result | No | What was delivered, key capabilities, and prototype or production status. Avoid unsupported metrics. |
-| Tech Stack Tags | No | Technologies and tools used. Enter a tag and press Enter or comma; remove a tag with its × control. |
-| Accent Color | No | A hex color for the project visual accent. Choose a preset or custom color. Default: `#0f766e`. |
-| Repository URL | No | Public or accessible source-code repository URL. |
-| Live Demo URL | No | Public demo or deployment URL, if available. |
-| Case Study Link | No | Internal case-study path or URL, if available. |
-| Featured | No | Whether the project should be featured on the homepage and projects page. |
-| Order index | Managed | The CMS assigns an order index when creating a project. It is not entered in the form. |
+| CMS field                  | Required | What to enter                                                                                        |
+| -------------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| Project Title              | Yes      | A clear, human-readable name.                                                                        |
+| Short Summary              | Yes      | One or two concise sentences describing what the project is and does.                                |
+| Problem Statement          | No       | The real problem, user need, or technical constraint that motivated the work.                        |
+| My Role & Responsibilities | No       | Your actual contributions and ownership.                                                             |
+| Outcome / Result           | No       | What was delivered, key capabilities, and prototype or production status. Avoid unsupported metrics. |
+| Tech Stack Tags            | No       | Technologies and tools used. Enter a tag and press Enter or comma; remove a tag with its × control.  |
+| Accent Color               | No       | A hex color for the project visual accent. Choose a preset or custom color. Default: `#0f766e`.      |
+| Repository URL             | No       | Public or accessible source-code repository URL.                                                     |
+| Live Demo URL              | No       | Public demo or deployment URL, if available.                                                         |
+| Case Study Link            | No       | Internal case-study path or URL, if available.                                                       |
+| Featured                   | No       | Whether the project should be featured on the homepage and projects page.                            |
+| Order index                | Managed  | The CMS assigns an order index when creating a project. It is not entered in the form.               |
 
 ### GitHub Auto-fill
 
@@ -84,12 +84,12 @@ Open the local URL printed by Vite (by default, `http://localhost:5173`).
 
 ## Environment Variables
 
-| Variable | Required for | Description |
-| --- | --- | --- |
-| `VITE_GITHUB_USERNAME` | Optional quick picks | GitHub username whose recent public repositories appear in the auto-fill panel. The sample value is `marvinlavoe`. |
-| `VITE_SUPABASE_URL` | Live CMS/data | Supabase project URL. |
-| `VITE_SUPABASE_ANON_KEY` | Live CMS/data | Supabase anon/public key. Configure Supabase authentication, database access policies, and the `portfolio-media` storage bucket for the CMS capabilities you use. |
-| `VITE_GEMINI_API_KEY` | Optional AI extraction | Google AI Studio API key for browser-side Gemini generation. Leave unset to use heuristic extraction. This client-side variable is public in the built app. |
+| Variable                 | Required for           | Description                                                                                                                                                       |
+| ------------------------ | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_GITHUB_USERNAME`   | Optional quick picks   | GitHub username whose recent public repositories appear in the auto-fill panel. The sample value is `marvinlavoe`.                                                |
+| `VITE_SUPABASE_URL`      | Live CMS/data          | Supabase project URL.                                                                                                                                             |
+| `VITE_SUPABASE_ANON_KEY` | Live CMS/data          | Supabase anon/public key. Configure Supabase authentication, database access policies, and the `portfolio-media` storage bucket for the CMS capabilities you use. |
+| `VITE_GEMINI_API_KEY`    | Optional AI extraction | Google AI Studio API key for browser-side Gemini generation. Leave unset to use heuristic extraction. This client-side variable is public in the built app.       |
 
 The repository's `.env.example` contains placeholder Supabase settings. Replace them with values from your own Supabase project; placeholders do not enable live persistence.
 

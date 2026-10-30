@@ -264,7 +264,8 @@
 
 /* AI Auto-Fill Panel */
 .ai-autofill-panel {
-  background: linear-gradient(#ffffff, #ffffff) padding-box,
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
     linear-gradient(120deg, #c4b5fd, #dbeafe, #99f6e4) border-box;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -621,7 +622,9 @@
 }
 
 @keyframes ai-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .ai-autofill-panel .spin {
